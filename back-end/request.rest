@@ -1,0 +1,28 @@
+GET http://localhost:8000/users
+
+###
+POST http://localhost:8000/users
+Content-Type: application/json
+
+{
+    "nim": "221113751",
+    "nama": "Irfan Mulya",
+    "jurusan": "Teknik Informatika",
+    "kelas": "IF C Sore",
+    "email": "221113751@students.mikroskil.ac.id"
+}
+
+###
+PATCH  http://localhost:8000/users/1
+Content-Type: application/json
+
+{
+    "nim": "221113751",
+    "nama": "Irfan Mulya Harahap",
+    "jurusan": "Teknik Informatika",
+    "kelas": "IF C Sore",
+    "email": "221113751@students.mikroskil.ac.id"
+}
+
+###
+DELETE http://localhost:8000/users/1

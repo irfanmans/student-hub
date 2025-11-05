@@ -11,18 +11,10 @@ import {
 import AppLayout from "./layout/AppLayout";
 import { MdDelete } from "react-icons/md";
 import { FaUserEdit } from "react-icons/fa";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./components/ui/dialog";
 import { Label } from "./components/ui/label";
 import { Input } from "./components/ui/input";
+import FormDialog from "./parts/FormDialog";
+import HeaderSection from "./parts/HeaderSection";
 
 export default function App() {
   return (
@@ -30,51 +22,67 @@ export default function App() {
       <div className="bg-[#f5f6f8] min-h-screen">
         <AppLayout>
           <div className="flex justify-between">
-            <div className="leading-loose">
-              <h1 className="text-5xl font-bold text-orange-400">
-                Student Management
-              </h1>
-              <p className="text-base">
-                Kelola catatan mahasiswa anda secara efisien
-              </p>
-            </div>
+            <HeaderSection
+              judul="Student Management"
+              deskripsi="Kelola catatan mahasiswa anda secara efisien"
+            />
 
-            <Dialog>
-              <form>
-                <DialogTrigger asChild>
-                  <Button>+ Tambah Mahasiswa</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Edit profile</DialogTitle>
-                    <DialogDescription>
-                      Ubah profil Anda di sini. Klik simpan setelah selesai.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-4">
-                    <div className="grid gap-3">
-                      <Label htmlFor="name">Name</Label>
-                      <Input id="name" name="name" defaultValue="" />
-                    </div>
-                    <div className="grid gap-3">
-                      <Label htmlFor="username">Username</Label>
-                      <Input
-                        id="username"
-                        name="username"
-                        defaultValue=""
-                        className="border"
-                      />
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <DialogClose asChild>
-                      <Button variant="outline">Cancel</Button>
-                    </DialogClose>
-                    <Button type="submit">Save changes</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </form>
-            </Dialog>
+            <FormDialog
+              judulBtn="+ Tambah Mahasiswa"
+              judulForm="Tambah Mahasiswa"
+              deskripsi="Ubah profil Anda di sini. Klik simpan setelah selesai."
+            >
+              <div className="grid gap-3">
+                <Label htmlFor="name">Nim Mahasiswa</Label>
+                <Input
+                  id="nim"
+                  name="nim"
+                  defaultValue=""
+                  type="teks"
+                  className="border border-gray-300 rounded-lg px-3 py-5 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="username">Nama Mahasiswa</Label>
+                <Input
+                  id="mahasiswa"
+                  name="mahasiswa"
+                  defaultValue=""
+                  type="teks"
+                  className="border border-gray-300 rounded-lg px-3 py-5 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="username">Jurusan Mahasiswa</Label>
+                <Input
+                  id="mahasiswa"
+                  name="mahasiswa"
+                  defaultValue=""
+                  type="teks"
+                  className="border border-gray-300 rounded-lg px-3 py-5 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="username">Kelas Mahasiswa</Label>
+                <Input
+                  id="mahasiswa"
+                  name="mahasiswa"
+                  defaultValue=""
+                  type="teks"
+                  className="border border-gray-300 rounded-lg px-3 py-5 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="username">Email Mahasiswa</Label>
+                <Input
+                  id="mahasiswa"
+                  name="mahasiswa"
+                  defaultValue=""
+                  type="teks"
+                  className="border border-gray-300 rounded-lg px-3 py-5 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+            </FormDialog>
           </div>
 
           <div className="mt-10">

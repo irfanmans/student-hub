@@ -1,16 +1,17 @@
 import express from "express";
+import cors from "cors";
+import UserRoute from "./routes/UserRoute.js";
 
 const app = express();
 
-// Middleware
+app.use(cors());
 app.use(express.json());
+app.use(UserRoute);
 
-// Routes
 app.get("/", (req, res) => {
   res.send("Welcome to StudentHub API 🚀");
 });
 
-// Jalankan server
 app.listen(8000, () => {
   console.log(`Server running on http://localhost:8000`);
 });
