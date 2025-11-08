@@ -14,13 +14,14 @@ import { FaUserEdit } from "react-icons/fa";
 import HeaderSection from "./parts/HeaderSection";
 import { useState } from "react";
 import { FormSection } from "./parts/FormSection";
+import { InputGroup } from "./parts/InputGroup";
 
 export default function App() {
-  const [openFormTambah, setOpenFormTambah] = useState(false)
+  const [openFormTambah, setOpenFormTambah] = useState(false);
 
   const handleOpenFormTambah = () => {
-    setOpenFormTambah(!openFormTambah)
-  }
+    setOpenFormTambah(!openFormTambah);
+  };
 
   return (
     <>
@@ -87,7 +88,45 @@ export default function App() {
             </div>
           </div>
           <div>
-            {openFormTambah && <FormSection />}
+            {openFormTambah && (
+              <FormSection judul="Tambah Data Mahasiswa" textBtn="Tambah">
+                <InputGroup
+                  label="Nim Mahasiswa"
+                  htmlFor="nim"
+                  id="nim"
+                  type="teks"
+                  placeholder="masukkan nim anda"
+                />
+                <InputGroup
+                  label="Nama Mahasiswa"
+                  htmlFor="nama"
+                  id="nama"
+                  type="teks"
+                  placeholder="masukkan nama anda"
+                />
+                <InputGroup
+                  label="Jurusan"
+                  htmlFor="jurusan"
+                  id="jurusan"
+                  type="teks"
+                  placeholder="masukkan jurusan anda"
+                />
+                <InputGroup
+                  label="Kelas"
+                  htmlFor="kelas"
+                  id="kelas"
+                  type="teks"
+                  placeholder="masukkan Kelas anda"
+                />
+                <InputGroup
+                  label="Email Outlook"
+                  htmlFor="email"
+                  id="email"
+                  type="teks"
+                  placeholder="masukkan email anda"
+                />
+              </FormSection>
+            )}
           </div>
         </AppLayout>
       </div>
