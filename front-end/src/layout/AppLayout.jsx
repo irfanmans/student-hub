@@ -1,7 +1,7 @@
-export default function AppLayout({ children }) {
+export default function AppLayout({ children, className }) {
   return (
     <>
-      <div className="p-40">{children}</div>
+      <div className={className}>{children}</div>
     </>
   );
 }
