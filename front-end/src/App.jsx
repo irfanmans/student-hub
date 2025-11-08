@@ -12,12 +12,20 @@ import AppLayout from "./layout/AppLayout";
 import { MdDelete } from "react-icons/md";
 import { FaUserEdit } from "react-icons/fa";
 import HeaderSection from "./parts/HeaderSection";
+import { useState } from "react";
+import { FormSection } from "./parts/FormSection";
 
 export default function App() {
+  const [openFormTambah, setOpenFormTambah] = useState(false)
+
+  const handleOpenFormTambah = () => {
+    setOpenFormTambah(!openFormTambah)
+  }
+
   return (
     <>
       <div className="bg-[#f5f6f8] min-h-screen">
-        <AppLayout className="p-15 grid grid-cols-[2fr_1fr]">
+        <AppLayout className="p-15 grid grid-cols-[2fr_1fr] gap-20 justify-between">
           <div>
             <div className="flex justify-between items-center">
               <HeaderSection
@@ -25,7 +33,7 @@ export default function App() {
                 deskripsi="Kelola catatan mahasiswa anda secara efisien"
               />
 
-              <Button>+ Tambah Mahasiswa</Button>
+              <Button onClick={handleOpenFormTambah}>+ Tambah Mahasiswa</Button>
             </div>
 
             <div className="mt-10">
@@ -77,6 +85,9 @@ export default function App() {
                 </Table>
               </Card>
             </div>
+          </div>
+          <div>
+            {openFormTambah && <FormSection />}
           </div>
         </AppLayout>
       </div>
