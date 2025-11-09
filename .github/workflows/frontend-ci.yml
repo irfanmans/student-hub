@@ -18,26 +18,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Setup Node.js versi 20.19.0 (minimal versi yang disarankan oleh Vite)
       - name: Use Node.js 20.19.0
         uses: actions/setup-node@v4
         with:
           node-version: 20.19.0
 
-      # Bersihkan cache npm untuk menghindari konflik dependensi
       - name: Clear npm cache
         run: npm cache clean --force
 
-      # Install dependency dari awal agar bersih
       - name: Clean install dependencies
         run: |
           rm -rf node_modules package-lock.json
           npm install
 
-      # Jalankan proses build
       - name: Run build
         run: npm run build
 
-      # Jalankan lint untuk memastikan code style sesuai standar
       - name: Run lint
         run: npm run lint
