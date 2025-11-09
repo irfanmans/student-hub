@@ -12,35 +12,57 @@ import AppLayout from "./layout/AppLayout";
 import { MdDelete } from "react-icons/md";
 import { FaUserEdit } from "react-icons/fa";
 import HeaderSection from "./parts/HeaderSection";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormSection } from "./parts/FormSection";
 import { InputGroup } from "./parts/InputGroup";
+import axios from "axios";
+import Error from "./components/ui/Error";
 
 export default function App() {
+  const [mahasiswa, setMahasiswa] = useState([]);
   const [openFormTambah, setOpenFormTambah] = useState(false);
+  const [openFormEdit, setOpenFormEdit] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleOpenFormTambah = () => {
+  function handleOpenFormTambah() {
     setOpenFormTambah(!openFormTambah);
-  };
+  }
+
+  function handleOpenFormEdit() {
+    setOpenFormEdit(!openFormEdit);
+  }
+
+  useEffect(function () {
+    async function ambilDataMahasiswa() {
+      try {
+        const res = await axios.get("http://localhost:8000/users");
+        setMahasiswa(res.data);
+      } catch (error) {
+        setError(error.msg);
+      }
+    }
+
+    ambilDataMahasiswa();
+  }, []);
 
   return (
     <>
       <div className="bg-[#f5f6f8] min-h-screen">
-        <AppLayout className="p-15 grid grid-cols-[2fr_1fr] gap-20 justify-between">
+        <AppLayout className="p-5 grid grid-cols-[1fr_1fr] gap-5 justify-between">
           <div>
             <div className="flex justify-between items-center">
-              <HeaderSection
-                judul="Student Management"
-                deskripsi="Kelola catatan mahasiswa anda secara efisien"
-              />
+              <HeaderSection judul="Student Management" />
 
-              <Button onClick={handleOpenFormTambah}>+ Tambah Mahasiswa</Button>
+              <Button onClick={handleOpenFormTambah} className="cursor-pointer">
+                + Tambah Mahasiswa
+              </Button>
             </div>
 
             <div className="mt-10">
               <Card className="px-5">
+                {error && <Error error={error} />}
                 <Table className="border border-gray-200 ">
-                  <TableHeader className="text-[15px] bg-gray-200">
+                  <TableHeader className="text-[13px] bg-gray-200">
                     <TableRow>
                       <TableHead className="font-bold text-gray-400">
                         Nomor
@@ -55,9 +77,6 @@ export default function App() {
                         Jurusan
                       </TableHead>
                       <TableHead className="font-bold text-gray-400">
-                        Kelas
-                      </TableHead>
-                      <TableHead className="font-bold text-gray-400">
                         Email Outlook
                       </TableHead>
                       <TableHead className="font-bold text-gray-400">
@@ -66,22 +85,26 @@ export default function App() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    <TableRow>
-                      <TableCell>01</TableCell>
-                      <TableCell>221113751</TableCell>
-                      <TableCell>Irfan Mulya</TableCell>
-                      <TableCell>Teknik Informatika</TableCell>
-                      <TableCell>IF C Sore</TableCell>
-                      <TableCell>221113751@students.mikroskil.ac.id</TableCell>
-                      <TableCell className="flex gap-2">
-                        <Button className="bg-orange-400 hover:bg-gray-400 cursor-pointer">
-                          <FaUserEdit />
-                        </Button>
-                        <Button className="bg-red-500 hover:bg-gray-400 cursor-pointer">
-                          <MdDelete />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
+                    {mahasiswa.map((data, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{index + 1}</TableCell>
+                        <TableCell>{data.nim}</TableCell>
+                        <TableCell>{data.nama}</TableCell>
+                        <TableCell>{data.jurusan}</TableCell>
+                        <TableCell>{data.email}</TableCell>
+                        <TableCell className="flex gap-2">
+                          <Button
+                            className="bg-orange-400 hover:bg-gray-400 cursor-pointer"
+                            onClick={handleOpenFormEdit}
+                          >
+                            <FaUserEdit />
+                          </Button>
+                          <Button className="bg-red-500 hover:bg-gray-400 cursor-pointer">
+                            <MdDelete />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </Card>
@@ -90,6 +113,45 @@ export default function App() {
           <div>
             {openFormTambah && (
               <FormSection judul="Tambah Data Mahasiswa" textBtn="Tambah">
+                <InputGroup
+                  label="Nim Mahasiswa"
+                  htmlFor="nim"
+                  id="nim"
+                  type="teks"
+                  placeholder="masukkan nim anda"
+                />
+                <InputGroup
+                  label="Nama Mahasiswa"
+                  htmlFor="nama"
+                  id="nama"
+                  type="teks"
+                  placeholder="masukkan nama anda"
+                />
+                <InputGroup
+                  label="Jurusan"
+                  htmlFor="jurusan"
+                  id="jurusan"
+                  type="teks"
+                  placeholder="masukkan jurusan anda"
+                />
+                <InputGroup
+                  label="Kelas"
+                  htmlFor="kelas"
+                  id="kelas"
+                  type="teks"
+                  placeholder="masukkan Kelas anda"
+                />
+                <InputGroup
+                  label="Email Outlook"
+                  htmlFor="email"
+                  id="email"
+                  type="teks"
+                  placeholder="masukkan email anda"
+                />
+              </FormSection>
+            )}
+            {openFormEdit && (
+              <FormSection judul="Edit Data Mahasiswa" textBtn="Simpan">
                 <InputGroup
                   label="Nim Mahasiswa"
                   htmlFor="nim"

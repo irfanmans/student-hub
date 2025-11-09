@@ -13,7 +13,7 @@ export function FormSection({ judul, textBtn, children }) {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="text-3xl font-bold text-cyan-500">
+        <CardTitle className="text-2xl font-bold text-cyan-500">
           {judul}
         </CardTitle>
       </CardHeader>
@@ -23,7 +23,7 @@ export function FormSection({ judul, textBtn, children }) {
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <Button type="submit" className="mt-5 w-full cursor-pointer py-6">
+        <Button type="submit" className="mt-2 w-full cursor-pointer">
           {textBtn}
         </Button>
       </CardFooter>
