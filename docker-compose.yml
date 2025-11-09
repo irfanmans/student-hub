@@ -7,37 +7,37 @@ services:
     container_name: student-hub-db
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root # Ganti dengan password yang aman
-      MYSQL_DATABASE: crud_studenthub # Sesuai dengan config
+      MYSQL_ROOT_PASSWORD: studenthub
+      MYSQL_DATABASE: crud_studenthub
     volumes:
-      - db-data:/var/lib/mysql # Menyimpan data database secara persisten
+      - db-data:/var/lib/mysql
 
   # Layanan Backend (Node.js)
   backend:
-    build: ./back-end # Path ke Dockerfile backend
-    image: GANTI_DENGAN_USERNAME_ANDA/student-hub-backend
+    build: ./back-end
+    image: irfanman/student-hub-backend:latest
     container_name: student_hub_backend
     restart: unless-stopped
     ports:
-      - "8000:8000" # Mapping port host ke port container (sesuai app.js)
+      - "8000:8000"
     environment:
-      - DB_HOST=db # Ini merujuk ke nama service 'db' di atas
+      - DB_HOST=db
       - DB_NAME=crud_studenthub
       - DB_USER=root
-      - DB_PASS=root # Sesuaikan dengan MYSQL_ROOT_PASSWORD
+      - DB_PASS=studenthub
     depends_on:
-      - db # Memastikan 'db' dimulai sebelum 'backend'
+      - db
 
   # Layanan Frontend (React + NGINX)
   frontend:
-    build: ./front-end # Path ke Dockerfile frontend
-    image: GANTI_DENGAN_USERNAME_ANDA/student-hub-frontend
+    build: ./front-end
+    image: irfanman/student-hub-frontend:latest
     container_name: student_hub_frontend
     restart: unless-stopped
     ports:
-      - "80:80" # Mapping port host 80 ke port NGINX 80 di container
+      - "80:80"
     depends_on:
-      - backend # Memastikan 'backend' dimulai sebelum 'frontend'
+      - backend
 
 volumes:
-  db-data: # Mendefinisikan volume yang digunakan oleh 'db'
+  db-data:
