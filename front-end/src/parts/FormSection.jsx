@@ -1,20 +1,23 @@
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardAction,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { IoClose } from "react-icons/io5";
 
-export function FormSection({ judul, textBtn, children }) {
+export function FormSection({ judul, textBtn, children, onClose }) {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-cyan-500">
+        <CardTitle className="flex justify-between items-center text-2xl font-bold text-cyan-500">
           {judul}
+          <IoClose
+            className="bg-red-600 text-white rounded-full p-1 w-7 h-7 cursor-pointer"
+            onClick={onClose}
+          />
         </CardTitle>
       </CardHeader>
       <CardContent>

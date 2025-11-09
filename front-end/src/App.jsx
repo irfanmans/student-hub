@@ -20,18 +20,26 @@ import Error from "./components/ui/Error";
 
 export default function App() {
   const [mahasiswa, setMahasiswa] = useState([]);
-  const [openFormTambah, setOpenFormTambah] = useState(false);
-  const [openFormEdit, setOpenFormEdit] = useState(false);
+  const [openForm, setOpenForm] = useState(false);
+  const [modeForm, setModeForm] = useState("");
   const [error, setError] = useState("");
 
   function handleOpenFormTambah() {
-    setOpenFormTambah(!openFormTambah);
+    setOpenForm(!openForm);
+    setModeForm("tambah");
+  }
+
+  function handleCloseForm() {
+    setOpenForm(false);
+    setModeForm("");
   }
 
   function handleOpenFormEdit() {
-    setOpenFormEdit(!openFormEdit);
+    setOpenForm(!openForm);
+    setModeForm("edit");
   }
 
+  // AMBIL DATA
   useEffect(function () {
     async function ambilDataMahasiswa() {
       try {
@@ -111,8 +119,12 @@ export default function App() {
             </div>
           </div>
           <div>
-            {openFormTambah && (
-              <FormSection judul="Tambah Data Mahasiswa" textBtn="Tambah">
+            {openForm && modeForm === "tambah" && (
+              <FormSection
+                judul="Tambah Data Mahasiswa"
+                textBtn="Tambah"
+                onClose={handleCloseForm}
+              >
                 <InputGroup
                   label="Nim Mahasiswa"
                   htmlFor="nim"
@@ -150,8 +162,12 @@ export default function App() {
                 />
               </FormSection>
             )}
-            {openFormEdit && (
-              <FormSection judul="Edit Data Mahasiswa" textBtn="Simpan">
+            {openForm && modeForm === "edit" && (
+              <FormSection
+                judul="Edit Data Mahasiswa"
+                textBtn="Simpan"
+                onClose={handleCloseForm}
+              >
                 <InputGroup
                   label="Nim Mahasiswa"
                   htmlFor="nim"
