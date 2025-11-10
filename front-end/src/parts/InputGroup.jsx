@@ -1,7 +1,15 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function InputGroup({ label, id, type, placeholder, htmlFor }) {
+export function InputGroup({
+  label,
+  id,
+  type,
+  placeholder,
+  htmlFor,
+  onChange,
+  value,
+}) {
   return (
     <>
       <div className="grid gap-2">
@@ -12,6 +20,8 @@ export function InputGroup({ label, id, type, placeholder, htmlFor }) {
           placeholder={placeholder}
           required
           className="border border-gray-300"
+          onChange={onChange}
+          value={value}
         />
       </div>
     </>

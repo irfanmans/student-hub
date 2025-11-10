@@ -19,6 +19,11 @@ import axios from "axios";
 import Error from "./components/ui/Error";
 
 export default function App() {
+  const [nim, setNim] = useState("");
+  const [nama, setNama] = useState("");
+  const [jurusan, setJurusan] = useState("");
+  const [email, setEmail] = useState("");
+
   const [mahasiswa, setMahasiswa] = useState([]);
   const [openForm, setOpenForm] = useState(false);
   const [modeForm, setModeForm] = useState("");
@@ -52,6 +57,22 @@ export default function App() {
 
     ambilDataMahasiswa();
   }, []);
+
+  // TAMBAH DATA
+  async function handleSubmitFormTambah(e) {
+    e.preventDefault();
+
+    try {
+      await axios.post("http://localhost:8000/users", {
+        nim,
+        nama,
+        jurusan,
+        email,
+      });
+    } catch (error) {
+      setError(error.msg);
+    }
+  }
 
   return (
     <>
@@ -124,6 +145,7 @@ export default function App() {
                 judul="Tambah Data Mahasiswa"
                 textBtn="Tambah"
                 onClose={handleCloseForm}
+                onSubmit={handleSubmitFormTambah}
               >
                 <InputGroup
                   label="Nim Mahasiswa"
@@ -131,6 +153,8 @@ export default function App() {
                   id="nim"
                   type="teks"
                   placeholder="masukkan nim anda"
+                  onChange={(e) => setNim(e.target.value)}
+                  value={nim}
                 />
                 <InputGroup
                   label="Nama Mahasiswa"
@@ -138,6 +162,8 @@ export default function App() {
                   id="nama"
                   type="teks"
                   placeholder="masukkan nama anda"
+                  onChange={(e) => setNama(e.target.value)}
+                  value={nama}
                 />
                 <InputGroup
                   label="Jurusan"
@@ -145,13 +171,8 @@ export default function App() {
                   id="jurusan"
                   type="teks"
                   placeholder="masukkan jurusan anda"
-                />
-                <InputGroup
-                  label="Kelas"
-                  htmlFor="kelas"
-                  id="kelas"
-                  type="teks"
-                  placeholder="masukkan Kelas anda"
+                  onChange={(e) => setJurusan(e.target.value)}
+                  value={jurusan}
                 />
                 <InputGroup
                   label="Email Outlook"
@@ -159,6 +180,8 @@ export default function App() {
                   id="email"
                   type="teks"
                   placeholder="masukkan email anda"
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                 />
               </FormSection>
             )}
@@ -188,13 +211,6 @@ export default function App() {
                   id="jurusan"
                   type="teks"
                   placeholder="masukkan jurusan anda"
-                />
-                <InputGroup
-                  label="Kelas"
-                  htmlFor="kelas"
-                  id="kelas"
-                  type="teks"
-                  placeholder="masukkan Kelas anda"
                 />
                 <InputGroup
                   label="Email Outlook"

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { IoClose } from "react-icons/io5";
 
-export function FormSection({ judul, textBtn, children, onClose }) {
+export function FormSection({ judul, textBtn, children, onClose, onSubmit }) {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -21,7 +21,7 @@ export function FormSection({ judul, textBtn, children, onClose }) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={onSubmit}>
           <div className="flex flex-col gap-6">{children}</div>
         </form>
       </CardContent>
