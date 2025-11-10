@@ -31,3 +31,5 @@
 2. db
 3. backend
 4. frontend
+
+Catatan: branch main adalah project yang sudah jadi dan siap digunakan
