@@ -37,5 +37,17 @@ services:
     depends_on:
       - backend
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: student_hub_pma
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+    depends_on:
+      - db
+
 volumes:
   db-data:
