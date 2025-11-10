@@ -24,3 +24,10 @@
 2. docker stop <nama-container> : Menghentikan container yang sedang berjalan tanpa menghapusnya
 3. docker start <nama-container> : Menjalankan ulang container yang sebelumnya dihentikan
 4. docker compos up -d --build <nama-layanan> : ketika ada perubahan pada project, meliputi code dan yang lain yang mempengaruhi Docker nya
+
+## Layanan Docker
+
+1. phpmyadmin
+2. db
+3. backend
+4. frontend
