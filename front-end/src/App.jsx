@@ -12,7 +12,7 @@ import AppLayout from "./layout/AppLayout";
 import { MdDelete } from "react-icons/md";
 import { FaUserEdit } from "react-icons/fa";
 import HeaderSection from "./parts/HeaderSection";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { FormSection } from "./parts/FormSection";
 import { InputGroup } from "./parts/InputGroup";
 import axios from "axios";
@@ -27,41 +27,57 @@ export default function App() {
   const [mahasiswa, setMahasiswa] = useState([]);
   const [openForm, setOpenForm] = useState(false);
   const [modeForm, setModeForm] = useState("");
+  const [editId, setEditId] = useState(null);
   const [error, setError] = useState("");
 
+  // AMBIL DATA
+  const ambilDataMahasiswa = useCallback(async () => {
+    try {
+      const res = await axios.get("http://localhost:8000/users");
+      setMahasiswa(res.data);
+      setError("");
+    } catch (error) {
+      setError(error.message || "Gagal mengambil data mahasiswa");
+    }
+  }, []);
+
+  useEffect(() => {
+    ambilDataMahasiswa();
+  }, [ambilDataMahasiswa]);
+
+  function clearFormState() {
+    setNim("");
+    setNama("");
+    setJurusan("");
+    setEmail("");
+    setEditId(null);
+  }
+
   function handleOpenFormTambah() {
-    setOpenForm(!openForm);
+    clearFormState();
     setModeForm("tambah");
+    setOpenForm(true);
+  }
+
+  function handleOpenFormEdit(data) {
+    setNim(data.nim);
+    setNama(data.nama);
+    setJurusan(data.jurusan);
+    setEmail(data.email);
+    setEditId(data.id);
+    setModeForm("edit");
+    setOpenForm(true);
   }
 
   function handleCloseForm() {
     setOpenForm(false);
     setModeForm("");
+    clearFormState();
   }
-
-  function handleOpenFormEdit() {
-    setOpenForm(!openForm);
-    setModeForm("edit");
-  }
-
-  // AMBIL DATA
-  useEffect(function () {
-    async function ambilDataMahasiswa() {
-      try {
-        const res = await axios.get("http://localhost:8000/users");
-        setMahasiswa(res.data);
-      } catch (error) {
-        setError(error.msg);
-      }
-    }
-
-    ambilDataMahasiswa();
-  }, []);
 
   // TAMBAH DATA
   async function handleSubmitFormTambah(e) {
     e.preventDefault();
-
     try {
       await axios.post("http://localhost:8000/users", {
         nim,
@@ -69,8 +85,39 @@ export default function App() {
         jurusan,
         email,
       });
+      await ambilDataMahasiswa();
+      handleCloseForm();
     } catch (error) {
-      setError(error.msg);
+      setError(error.message || "Gagal menambah data");
+    }
+  }
+
+  // EDIT DATA
+  async function handleSubmitFormEdit(e) {
+    e.preventDefault();
+    try {
+      await axios.patch(`http://localhost:8000/users/${editId}`, {
+        nim,
+        nama,
+        jurusan,
+        email,
+      });
+      await ambilDataMahasiswa();
+      handleCloseForm();
+    } catch (error) {
+      setError(error.message || "Gagal mengedit data");
+    }
+  }
+
+  // HAPUS DATA
+  async function handleHapusMahasiswa(id) {
+    if (window.confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+      try {
+        await axios.delete(`http://localhost:8000/users/${id}`);
+        await ambilDataMahasiswa();
+      } catch (error) {
+        setError(error.message || "Gagal menghapus data");
+      }
     }
   }
 
@@ -81,7 +128,6 @@ export default function App() {
           <div>
             <div className="flex justify-between items-center">
               <HeaderSection judul="Student Management" />
-
               <Button onClick={handleOpenFormTambah} className="cursor-pointer">
                 + Tambah Mahasiswa
               </Button>
@@ -115,7 +161,7 @@ export default function App() {
                   </TableHeader>
                   <TableBody>
                     {mahasiswa.map((data, index) => (
-                      <TableRow key={index}>
+                      <TableRow key={data.id || index}>
                         <TableCell>{index + 1}</TableCell>
                         <TableCell>{data.nim}</TableCell>
                         <TableCell>{data.nama}</TableCell>
@@ -124,11 +170,14 @@ export default function App() {
                         <TableCell className="flex gap-2">
                           <Button
                             className="bg-orange-400 hover:bg-gray-400 cursor-pointer"
-                            onClick={handleOpenFormEdit}
+                            onClick={() => handleOpenFormEdit(data)}
                           >
                             <FaUserEdit />
                           </Button>
-                          <Button className="bg-red-500 hover:bg-gray-400 cursor-pointer">
+                          <Button
+                            className="bg-red-500 hover:bg-gray-400 cursor-pointer"
+                            onClick={() => handleHapusMahasiswa(data.id)}
+                          >
                             <MdDelete />
                           </Button>
                         </TableCell>
@@ -151,7 +200,7 @@ export default function App() {
                   label="Nim Mahasiswa"
                   htmlFor="nim"
                   id="nim"
-                  type="teks"
+                  type="text"
                   placeholder="masukkan nim anda"
                   onChange={(e) => setNim(e.target.value)}
                   value={nim}
@@ -160,7 +209,7 @@ export default function App() {
                   label="Nama Mahasiswa"
                   htmlFor="nama"
                   id="nama"
-                  type="teks"
+                  type="text"
                   placeholder="masukkan nama anda"
                   onChange={(e) => setNama(e.target.value)}
                   value={nama}
@@ -169,7 +218,7 @@ export default function App() {
                   label="Jurusan"
                   htmlFor="jurusan"
                   id="jurusan"
-                  type="teks"
+                  type="text"
                   placeholder="masukkan jurusan anda"
                   onChange={(e) => setJurusan(e.target.value)}
                   value={jurusan}
@@ -178,7 +227,7 @@ export default function App() {
                   label="Email Outlook"
                   htmlFor="email"
                   id="email"
-                  type="teks"
+                  type="text"
                   placeholder="masukkan email anda"
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
@@ -190,34 +239,43 @@ export default function App() {
                 judul="Edit Data Mahasiswa"
                 textBtn="Simpan"
                 onClose={handleCloseForm}
+                onSubmit={handleSubmitFormEdit} // Gunakan handler edit
               >
                 <InputGroup
                   label="Nim Mahasiswa"
                   htmlFor="nim"
                   id="nim"
-                  type="teks"
+                  type="text"
                   placeholder="masukkan nim anda"
+                  onChange={(e) => setNim(e.target.value)}
+                  value={nim}
                 />
                 <InputGroup
                   label="Nama Mahasiswa"
                   htmlFor="nama"
                   id="nama"
-                  type="teks"
+                  type="text"
                   placeholder="masukkan nama anda"
+                  onChange={(e) => setNama(e.target.value)}
+                  value={nama}
                 />
                 <InputGroup
                   label="Jurusan"
                   htmlFor="jurusan"
                   id="jurusan"
-                  type="teks"
+                  type="text"
                   placeholder="masukkan jurusan anda"
+                  onChange={(e) => setJurusan(e.target.value)}
+                  value={jurusan}
                 />
                 <InputGroup
                   label="Email Outlook"
                   htmlFor="email"
                   id="email"
-                  type="teks"
+                  type="text"
                   placeholder="masukkan email anda"
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                 />
               </FormSection>
             )}
