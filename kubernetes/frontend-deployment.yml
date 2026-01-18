@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: irfanmans/student-hub-frontend
+          image: irfanman/student-hub-frontend:latest
           ports:
             - containerPort: 80
           resources:
