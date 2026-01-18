@@ -54,21 +54,3 @@ jobs:
           file: ./front-end/Dockerfile
           push: true
           tags: irfanman/student-hub-frontend:latest
-
-      - name: Install kubectl
-        if: github.ref == 'refs/heads/main'
-        uses: azure/setup-kubectl@v4
-        with:
-          version: v1.29.0
-
-      - name: Set kubeconfig
-        if: github.ref == 'refs/heads/main'
-        run: |
-          mkdir -p $HOME/.kube
-          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
-
-      - name: Deploy to Kubernetes
-        if: github.ref == 'refs/heads/main'
-        run: |
-          kubectl get nodes
-          kubectl apply -f kubernetes/
