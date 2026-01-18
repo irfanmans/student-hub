@@ -43,3 +43,7 @@ jobs:
           file: ./back-end/Dockerfile
           push: true
           tags: irfanman/student-hub-backend:latest
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f kubernetes/
