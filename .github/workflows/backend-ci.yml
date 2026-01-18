@@ -21,6 +21,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: npm
+          cache-dependency-path: back-end/package-lock.json
 
       - name: Install dependencies
         run: npm install
@@ -44,6 +46,20 @@ jobs:
           push: true
           tags: irfanman/student-hub-backend:latest
 
-      - name: Deploy to Kubernetes
+      - name: Install kubectl
+        if: github.ref == 'refs/heads/main'
+        uses: azure/setup-kubectl@v4
+        with:
+          version: v1.29.0
+
+      - name: Set kubeconfig
+        if: github.ref == 'refs/heads/main'
         run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
+
+      - name: Deploy to Kubernetes
+        if: github.ref == 'refs/heads/main'
+        run: |
+          kubectl get pods  
           kubectl apply -f kubernetes/

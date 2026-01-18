@@ -22,6 +22,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.19.0
+          cache: npm
+          cache-dependency-path: front-end/package-lock.json
 
       - name: Clear npm cache
         run: npm cache clean --force
@@ -53,6 +55,20 @@ jobs:
           push: true
           tags: irfanman/student-hub-frontend:latest
 
-      - name: Deploy to Kubernetes
+      - name: Install kubectl
+        if: github.ref == 'refs/heads/main'
+        uses: azure/setup-kubectl@v4
+        with:
+          version: v1.29.0
+
+      - name: Set kubeconfig
+        if: github.ref == 'refs/heads/main'
         run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
+
+      - name: Deploy to Kubernetes
+        if: github.ref == 'refs/heads/main'
+        run: |
+          kubectl get nodes
           kubectl apply -f kubernetes/
