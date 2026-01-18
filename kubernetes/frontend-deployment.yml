@@ -17,3 +17,10 @@ spec:
           image: irfanmans/student-hub-frontend
           ports:
             - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "300m"
+              memory: "128Mi"
